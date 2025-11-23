@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[ML][IT] Kytsmen Yevhenii</title>
+    
+    <link rel="icon" type="image/png" href="pacman1.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'pixel': ['"Press Start 2P"', 'cursive'],
+                        'terminal': ['"VT323"', 'monospace'],
+                    },
+                    colors: {
+                        retro: {
+                            bg: '#050505',
+                            green: '#00FF00',
+                            dimGreen: 'rgba(0, 255, 0, 0.1)',
+                            gray: '#111',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        /* --- INTRO OVERLAY STYLES --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-out;
+            padding: 20px;
+        }
+
+        .intro-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            color: #00FF00;
+            position: relative;
+            text-align: center;
+            text-shadow: 0 0 10px #00FF00;
+        }
+
+        @media (min-width: 768px) {
+            .intro-text { font-size: 2rem; }
+        }
+
+        /* Ефект Глітчу */
+        .glitch-active {
+            animation: glitch-anim 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: white;
+            text-shadow: 2px 2px #ff00c1, -2px -2px #00fff9;
+        }
+
+        /* --- MAIN SITE STYLES --- */
+        #main-content {
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+        }
+
+        canvas#matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .scanlines {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 3px;
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        .glow-text { text-shadow: 0 0 10px rgba(0, 255, 0, 0.8); }
+        
+        .pixel-border {
+            box-shadow: -4px 0 0 0 #00FF00, 4px 0 0 0 #00FF00, 0 -4px 0 0 #00FF00, 0 4px 0 0 #00FF00;
+            margin: 4px;
+            background-color: rgba(10, 10, 10, 0.85); /* Напівпрозорий фон */
+            backdrop-filter: blur(4px); /* Ефект розмиття матриці під блоком */
+        }
+        
+        .pacman-icon {
+            image-rendering: pixelated;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.9));
+        }
+
+        /* Стиль для Details/Summary */
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: #00FF00;
+            margin-bottom: 15px;
+            margin-top: 15px;
+            transition: all 0.3s;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+            border: 1px dashed #00FF00;
+            padding: 10px;
+            text-align: center;
+            background: rgba(0, 255, 0, 0.05);
+        }
+        details > summary:hover {
+            background: #00FF00;
+            color: #000;
+            text-shadow: none;
+        }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] > summary { 
+            margin-bottom: 20px; 
+            background: rgba(0, 255, 0, 0.1);
+            color: #00FF00;
+        }
+        details[open] > div { animation: fade-in 0.6s ease-out; }
+
+        main { position: relative; z-index: 10; }
+        ::-webkit-scrollbar { width: 8px; background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #00FF00; border-radius: 4px; }
+        
+        /* Виділення тексту */
+        ::selection {
+            background: #00FF00;
+            color: #000;
+        }
+    </style>
+</head>
+<body class="font-terminal text-xl md:text-2xl selection:bg-retro-green selection:text-black pb-20">
+
+    <div id="intro-overlay">
+        <div id="intro-text" class="intro-text" data-text="ЩЕ ЧУТЬ-ЧУТЬ І САЙТ ЗАГРУЗИТЬСЯ...">
+            ЩЕ ЧУТЬ-ЧУТЬ І САЙТ ЗАГРУЗИТЬСЯ...
+        </div>
+    </div>
+
+    <div class="scanlines"></div>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div id="main-content">
+        
+        <a href="https://www.google.com/logos/2010/pacman10-i.html" target="_blank" 
+           class="absolute top-6 left-6 z-50 hover:scale-110 transition-transform duration-200 cursor-pointer">
+            <img src="pacman.png" 
+                 alt="Pacman Ghost" 
+                 class="w-[50px] h-[58px] pacman-icon">
+        </a>
+
+        <main class="max-w-3xl mx-auto px-6 pt-40 relative z-10"> 
+            
+            <header class="mb-16 text-center animate-fade-in">
+                <h1 class="font-pixel text-2xl md:text-4xl leading-normal text-white glow-text mb-6 bg-black/60 inline-block p-2 backdrop-blur-sm border-b-4 border-retro-green">
+                    ПРИВІТ, Я <span class="text-retro-green">ЖЕНЯ</span>
+                </h1>
+                <div class="pixel-border p-6 text-center mt-4 hover:shadow-[0_0_15px_rgba(0,255,0,0.3)] transition-shadow duration-300">
+                    <p class="text-gray-400 text-lg mb-2 font-pixel text-[10px] md:text-xs">І ЦЕ МІЙ МОТИВАЦІЙНИЙ ЛИСТ НА IT RESP'А НА</p>
+                    <p class="text-retro-green text-3xl font-bold tracking-widest glow-text">HACKath0n</p>
+                </div>
+            </header>
+
+            <<section class="mb-20">
+                <div class="flex items-center gap-4 mb-6 bg-black/80 w-fit px-2">
+                    <div class="w-3 h-3 bg-retro-green"></div>
+                    <h2 class="font-pixel text-lg text-white">ТРІШКИ ПРО СЕБЕ ТА ЧОМУ Я ТАК ЗАМОТИВОВАНИЙ</h2>
+                </div>
+                
+                <div class="pixel-border p-6 md:p-10">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        
+                        <div class="shrink-0 mx-auto md:mx-0">
+                            <img src="me.png" 
+                                 alt="My Photo" 
+                                 class="w-40 h-40 object-cover border-2 border-retro-green shadow-[4px_4px_0_0_#00FF00] grayscale hover:grayscale-0 transition-all duration-300">
+                        </div>
+
+                        <div class="flex-1">
+                            <p class="text-gray-300 leading-relaxed mb-4">
+                                Початком мого інтересу до програмування та <span class="text-retro-green font-bold">IT</span> в цілому можна вважати той день, коли я вперше сів за комп'ютер...
+                            </p>
+                            
+                            <details class="group">
+                                <summary class="text-retro-green cursor-pointer hover:text-white transition-colors py-2">
+                                    [ ЧИТАТИ ПОВНУ ІСТОРІЮ + ]
+                                </summary>
+                                <div class="text-gray-300 leading-relaxed mt-4">
+                                    <p class="mb-4">
+                                        Звісно, тоді я ще не вчив код, але це пробудило мою зацікавленість у роботі програм. В 10 років я почав цікавитись більше: пробував вчити <span class="text-retro-green">Python</span> (набридло), потім <span class="text-retro-green">Kotlin</span>. 
+                                    </p>
+                                    <p class="mb-4">
+                                        У 13 років були нові спроби навчання, але бракувало мотивації, хотілося більше грати в ігри. Проте буквально цього літа я зрозумів, що програмування — це класна штука. За літо та початок осені я прочитав книжки по <span class="text-retro-green">Python</span> та <span class="text-retro-green">C/C++</span>.
+                                    </p>
+                                    <p>
+                                        Коли в мене була співбесіда в <span class="text-retro-green">BEST</span>, я недовго думав, щоб обрати своїм топ-івентом <strong>HACKath0n</strong>. Я знав про нього раніше, і ідея цього івенту подобається мені найбільше. Я хочу зробити для нього максимально багато, а також стати частиною кортіми, подружитися з іншими учасниками, адже це класний досвід співпраці, який я прагну здобути.
+                                    </p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-20 animate-fade-in" style="animation-delay: 0.4s;">
+                <div class="flex items-center gap-4 mb-6 bg-black/80 w-fit px-3 py-1 border-l-4 border-retro-green">
+                    <h2 class="font-pixel text-lg text-white">ЧОМУ САМЕ Я?</h2>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="pixel-border p-6 hover:bg-retro-dimGreen transition-colors duration-500">
+                        <h3 class="font-bold text-white text-xl mb-2 font-pixel text-xs text-retro-green">> IT RESP </h3>
+                        <p class="text-gray-300 text-lg mt-4 leading-relaxed">
+                            У команді я пріоритетно хотів би бути <span class="text-retro-green font-bold">IT RESP`ом</span>. Моя мета на цій посаді — розвинути наявні хард-скіли, поліпшити бота, поліпшити мої навчики у програмуванні, отримати нові софт-скіли, а також знайти друзів.
+                        </p>
+                    </div>
+
+                    <div class="pixel-border p-6">
+                        <h3 class="font-bold text-white text-xl mb-2 font-pixel text-xs text-retro-green">> МІЙ ДОСВІД</h3>
+                        <p class="text-gray-300 text-lg mt-4 mb-4">
+                            З значних досягнень маю 5-те місце на науковій конференції кафедри ЕОМ...
+                        </p>
+                        
+                        <details class="group">
+                            <summary>[ ДЕТАЛІ ПРО ДОСВІД ]</summary>
+                            <div class="text-gray-300 leading-relaxed text-lg border-t border-retro-green/20 pt-4">
+                                <p class="mb-4">
+                                    Я написав програму, яка аналізувала конкретний периметр і шукала зміну пікселів, порівнюючи поточний кадр із попереднім. Зараз із викладачем ми дописуємо статтю на цю тему.
+                                </p>
+                                <p>
+                                    Також я виконував тестове завдання для однієї компанії (де потім мав співбесіду, яку, на жаль, не пройшов). Завдання полягало в написанні <span class="text-retro-green">Data Pipeline</span>. Детальніше про цей проект можна глянути на моєму GitHub.
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-20 animate-fade-in" style="animation-delay: 0.6s;">
+                <div class="flex items-center gap-4 mb-6 bg-black/80 w-fit px-3 py-1 border-l-4 border-retro-green">
+                    <h2 class="font-pixel text-lg text-white">АРСЕНАЛ НАВИЧОК</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="pixel-border p-6">
+                        <h3 class="font-pixel text-xs text-retro-green mb-6 text-center border-b-2 border-retro-green pb-2">[ TECH_STACK ]</h3>
+                        <ul class="space-y-4 font-mono text-xl text-gray-300">
+                            <li class="flex gap-3 items-center hover:text-white transition-colors">
+                                <span class="text-retro-green">></span> HTML5 / CSS3
+                            </li>
+                            <li class="flex gap-3 items-center hover:text-white transition-colors">
+                                <span class="text-retro-green">></span> JavaScript (ES6+)
+                            </li>
+                            <li class="flex gap-3 items-center hover:text-white transition-colors">
+                                <span class="text-retro-green">></span> Python
+                            </li>
+                            <li class="flex gap-3 items-center hover:text-white transition-colors">
+                                <span class="text-retro-green">></span> C / C++
+                            </li>
+                            <li class="flex gap-3 items-center hover:text-white transition-colors">
+                                <span class="text-retro-green">></span> PostgreSQL
+                            </li>
+                            <li class="flex gap-3 items-center hover:text-white transition-colors">
+                                <span class="text-retro-green">></span> SQLite
+                            </li>
+                            <li class="flex gap-3 items-center hover:text-white transition-colors">
+                                <span class="text-retro-green">></span> Docker
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pixel-border p-6">
+                        <h3 class="font-pixel text-xs text-white mb-6 text-center border-b-2 border-white pb-2">[ SOFT_SKILLS ]</h3>
+                        <ul class="space-y-5 text-gray-300 text-lg font-mono">
+                            <li class="flex gap-3 items-start">
+                                <span class="text-retro-green min-w-[10px] mt-1">+</span> 
+                                <span>Вмію слухати команду та підтримую раціональні ідеї.</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="text-retro-green min-w-[10px] mt-1">+</span> 
+                                <span>Стресостійкий. Конфлікти не впливають на мою продуктивність.</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="text-retro-green min-w-[10px] mt-1">+</span> 
+                                <span>Швидко засвоюю будь-яку нову інформацію.</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="text-retro-green min-w-[10px] mt-1">+</span> 
+                                <span>Відповідально ставлюся до дедлайнів. Виконую все вчасно.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="text-center pt-10 border-t-4 border-double border-retro-green/30 animate-fade-in" style="animation-delay: 0.8s;">
+                <p class="font-pixel text-xs md:text-sm mb-10 text-gray-400 animate-pulse-slow">
+                    ДЯКУЮ, ЩО ПЕРЕГЛЯНУВ МІЙ МОТИВАЦІЙНИЙ ЛИСТ!
+                </p>
+                
+                <div class="flex justify-center relative z-30">
+                    <a href="https://github.com/Alkaness" target="_blank" class="pixel-border bg-retro-green text-black font-pixel text-xs py-5 px-12 hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(0,255,0,0.5)]">
+                        > ПЕРЕЙТИ НА GITHUB
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // --- INTRO LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const introOverlay = document.getElementById('intro-overlay');
+            const introText = document.getElementById('intro-text');
+            const mainContent = document.getElementById('main-content');
+
+            // Додаємо глітч через 1.5с
+            setTimeout(() => {
+                introText.classList.add('glitch-active');
+                introText.style.color = 'white';
+            }, 1500);
+
+            // Прибираємо інтро через 3с
+            setTimeout(() => {
+                introOverlay.style.opacity = '0'; 
+                setTimeout(() => { introOverlay.style.display = 'none'; }, 1000);
+                mainContent.style.opacity = '1';
+                startMatrixRain();
+            }, 3000);
+        });
+
+        // --- MATRIX RAIN ---
+        function startMatrixRain() {
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            const textString = "HACKath0n BEST LVIV CORE TEAM 2025 IT`RESP 01";
+            const characters = textString.split("");
+            const fontSize = 14; 
+            const columns = canvas.width / fontSize; 
+            const drops = [];
+            for (let x = 0; x < columns; x++) drops[x] = 1;
+
+            function draw() {
+                // Напівпрозорий фон для шлейфу
+                ctx.fillStyle = "rgba(5, 5, 5, 0.05)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = "#00FF00"; 
+                ctx.font = fontSize + "px 'Press Start 2P'"; 
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = characters[Math.floor(Math.random() * characters.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            setInterval(draw, 35);
+        }
+    </script>
+</body>
+</html>
