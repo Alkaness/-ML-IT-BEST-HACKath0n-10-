@@ -53,7 +53,6 @@
             position: relative;
         }
 
-        /* --- INTRO OVERLAY STYLES --- */
         #intro-overlay {
             position: fixed;
             top: 0;
@@ -83,14 +82,12 @@
             .intro-text { font-size: 2rem; }
         }
 
-        /* Ефект Глітчу */
         .glitch-active {
             animation: glitch-anim 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
             color: white;
             text-shadow: 2px 2px #ff00c1, -2px -2px #00fff9;
         }
 
-        /* --- MAIN SITE STYLES --- */
         #main-content {
             opacity: 0;
             transition: opacity 1.5s ease-in;
@@ -121,8 +118,8 @@
         .pixel-border {
             box-shadow: -4px 0 0 0 #00FF00, 4px 0 0 0 #00FF00, 0 -4px 0 0 #00FF00, 0 4px 0 0 #00FF00;
             margin: 4px;
-            background-color: rgba(10, 10, 10, 0.85); /* Напівпрозорий фон */
-            backdrop-filter: blur(4px); /* Ефект розмиття матриці під блоком */
+            background-color: rgba(10, 10, 10, 0.85); 
+            backdrop-filter: blur(4px); 
         }
         
         .pacman-icon {
@@ -130,7 +127,7 @@
             filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.9));
         }
 
-        /* Стиль для Details/Summary */
+        
         details > summary {
             list-style: none;
             cursor: pointer;
@@ -163,7 +160,7 @@
         ::-webkit-scrollbar { width: 8px; background: #050505; }
         ::-webkit-scrollbar-thumb { background: #00FF00; border-radius: 4px; }
         
-        /* Виділення тексту */
+        
         ::selection {
             background: #00FF00;
             color: #000;
@@ -349,19 +346,19 @@
     </div>
 
     <script>
-        // --- INTRO LOGIC ---
+        
         document.addEventListener('DOMContentLoaded', () => {
             const introOverlay = document.getElementById('intro-overlay');
             const introText = document.getElementById('intro-text');
             const mainContent = document.getElementById('main-content');
 
-            // Додаємо глітч через 1.5с
+            
             setTimeout(() => {
                 introText.classList.add('glitch-active');
                 introText.style.color = 'white';
             }, 1500);
 
-            // Прибираємо інтро через 3с
+          
             setTimeout(() => {
                 introOverlay.style.opacity = '0'; 
                 setTimeout(() => { introOverlay.style.display = 'none'; }, 1000);
@@ -370,7 +367,6 @@
             }, 3000);
         });
 
-        // --- MATRIX RAIN ---
         function startMatrixRain() {
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
@@ -390,7 +386,6 @@
             for (let x = 0; x < columns; x++) drops[x] = 1;
 
             function draw() {
-                // Напівпрозорий фон для шлейфу
                 ctx.fillStyle = "rgba(5, 5, 5, 0.05)";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
