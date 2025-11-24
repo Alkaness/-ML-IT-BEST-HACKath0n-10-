@@ -7,28 +7,16 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                // Тут ми вказуємо назви шрифтів
-                'pixel': ['"Press Start 2P"', 'cursive'],
-                'terminal': ['"VT323"', 'monospace'],
+                // !!! ПЕРЕВІРТЕ ЦІ РЯДКИ !!!
+                'pixel': ['"Press Start 2P"', 'cursive'], // Шрифти для заголовків
+                'terminal': ['"VT323"', 'monospace'],    // Шрифти для основного тексту
+                // !!! ПЕРЕВІРТЕ ЦІ РЯДКИ !!!
             },
             colors: {
-                // Тут твої кастомні кольори
                 retro: {
-                    bg: '#050505',
                     green: '#00FF00',
-                    dimGreen: 'rgba(0, 255, 0, 0.1)',
                 }
             },
-            animation: {
-                'fade-in': 'fadeIn 0.5s ease-in-out',
-                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
-            keyframes: {
-                fadeIn: {
-                    '0%': { opacity: '0', transform: 'translateY(-10px)' },
-                    '100%': { opacity: '1', transform: 'translateY(0)' },
-                }
-            }
         },
     },
     plugins: [],

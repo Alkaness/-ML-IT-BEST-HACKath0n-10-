@@ -13,6 +13,7 @@ body {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
+    /* Тут встановлюється базовий шрифт 'terminal' */
     font-family: 'VT323', monospace;
 }
 
@@ -160,7 +161,7 @@ details[open] > div {
 ::-webkit-scrollbar-thumb { background: #00FF00; border-radius: 4px; }
 ::selection { background: #00FF00; color: #000; }
 
-/* Сховати скролбар для свайпера */
+/* Сховати скролбар для свайпера навичок */
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
