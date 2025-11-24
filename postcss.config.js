@@ -1,9 +1,7 @@
-import tailwindcss from 'tailwindcss';
-import autoprefixer from 'autoprefixer';
-
-export default {
-    plugins: [
-        tailwindcss,
-        autoprefixer,
-    ],
+module.exports = {
+    plugins: {
+        // Використовуємо require() для CommonJS, який вимагає Node.js
+        'tailwindcss': {},
+        'autoprefixer': {},
+    },
 };
