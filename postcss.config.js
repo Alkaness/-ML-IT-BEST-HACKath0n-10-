@@ -1,8 +1,9 @@
-module.exports = {
-    plugins: {
-        // ЗАМІНЮЄМО: 'tailwindcss': {}
-        // НА ЦЕ:
-        tailwindcss: require('tailwindcss'),
-        autoprefixer: require('autoprefixer'),
-    },
-}
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
+
+export default {
+    plugins: [
+        tailwindcss,
+        autoprefixer,
+    ],
+};
