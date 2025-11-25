@@ -124,7 +124,7 @@ export default function App() {
 
                 <a href="https://www.google.com/logos/2010/pacman10-i.html" target="_blank"
                    className="absolute top-6 left-6 z-50 hover:scale-110 transition-transform duration-200 cursor-pointer">
-                    <img src="/pacman.svg" alt="Pacman Ghost" className="w-[50px] h-[58px] pacman-icon" />
+                    <img src="/pacman.png" alt="Pacman Ghost" className="w-[50px] h-[58px] pacman-icon" />
                 </a>
 
                 <Navbar />
@@ -150,7 +150,7 @@ export default function App() {
                         <div className="pixel-border p-6 md:p-10">
                             <div className="flex flex-col md:flex-row gap-8 items-start">
                                 <div className="shrink-0 mx-auto md:mx-0">
-                                    <img src="/me.svg" alt="My Photo" className="w-40 h-40 object-cover border-2 border-[#00FF00] shadow-[4px_4px_0_0_#00FF00] grayscale hover:grayscale-0 transition-all duration-300" />
+                                    <img src="/me.png" alt="My Photo" className="w-40 h-40 object-cover border-2 border-[#00FF00] shadow-[4px_4px_0_0_#00FF00] grayscale hover:grayscale-0 transition-all duration-300" />
                                 </div>
                                 <div className="flex-1">
                                     <p className="text-gray-300 leading-relaxed mb-4">
