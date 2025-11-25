@@ -1,19 +1,16 @@
-/* --- ІМПОРТ ШРИФТІВ --- */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start2P&family=VT323&display=swap');
-
-/* !!! ДИРЕКТИВИ TAILWIND - КРИТИЧНО ВАЖЛИВО ДЛЯ РОБОТИ КЛАСІВ !!! */
+/* Підключення Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Базові стилі */
+/* Базові налаштування */
 body {
     background-color: #050505;
     color: #e0e0e0;
     overflow-x: hidden;
     margin: 0;
     padding: 0;
-    /* Тут встановлюється базовий шрифт 'terminal' */
+    /* Тут ми використовуємо шрифт, який підключили в index.html */
     font-family: 'VT323', monospace;
 }
 
@@ -43,7 +40,7 @@ body {
     position: relative;
 }
 
-/* Анімація "дьоргання" тексту */
+/* Анімація "дьоргання" тексту (Глітч) */
 .glitch-active {
     animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
     color: white;
@@ -106,6 +103,7 @@ details > summary {
     margin-top: 15px;
     text-transform: uppercase;
 
+    /* Плавна анімація */
     transition: all 0.3s ease;
 
     text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
@@ -115,38 +113,32 @@ details > summary {
     padding: 12px 10px;
     text-align: center;
     background: rgba(0, 255, 0, 0.02);
-    /* Прибираємо синю обводку при кліку */
-    outline: none;
+    outline: none; /* Прибираємо синю рамку браузера */
 }
 
-/* Ховер і Відкритий стан - однакові */
-details > summary:hover,
-details[open] > summary {
-    /* Ледь зелений фон */
-    background: rgba(0, 255, 0, 0.15);
+/* Ефект при наведенні (Hover) */
+details > summary:hover {
+    background: rgba(0, 255, 0, 0.15); /* Ледь помітний зелений */
+    border-style: solid; /* Суцільна рамка */
+    transform: scale(1.02); /* Збільшення */
 
-    /* Суцільна рамка */
-    border-style: solid;
-
-    /* Збільшення */
-    transform: scale(1.02);
-
-    /* Світіння */
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
-
-    /* Текст стає білим */
     color: #fff;
     text-shadow: 0 0 8px #00FF00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
 }
 
 details > summary::-webkit-details-marker { display: none; }
 
-/* Відступ коли відкрито */
+/* Стан ВІДКРИТО (Open) - фіксуємо стиль наведення */
 details[open] > summary {
     margin-bottom: 20px;
+    background: rgba(0, 255, 0, 0.15);
+    border-style: solid;
+    transform: scale(1.02);
+    color: #00FF00; /* Текст зелений */
+    text-shadow: 0 0 8px #00FF00;
 }
 
-/* Анімація появи тексту знизу */
 details[open] > div {
     animation: fadeIn 0.6s ease-out;
 }
@@ -161,7 +153,7 @@ details[open] > div {
 ::-webkit-scrollbar-thumb { background: #00FF00; border-radius: 4px; }
 ::selection { background: #00FF00; color: #000; }
 
-/* Сховати скролбар для свайпера навичок */
+/* Сховати скролбар для свайпера */
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
