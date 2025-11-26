@@ -12,7 +12,7 @@ export default function App() {
     const [glitch, setGlitch] = useState(false);
     const canvasRef = useRef(null);
 
-    // Список навичок для свайпера
+    // Список навичок
     const techStack = [
         'HTML5 / CSS3', 'JavaScript (ES6+)', 'Python', 'C / C++',
         'PostgreSQL', 'SQLite', 'Docker', 'React', 'Tailwind CSS', 'Git'
@@ -90,32 +90,17 @@ export default function App() {
         </nav>
     );
 
-    // --- КНОПКА ДЕТАЛЕЙ ---
+    // --- КНОПКА ДЕТАЛЕЙ (Стандартна для роботи CSS) ---
     const MatrixDetails = ({ summary, children }) => {
-        const [isOpen, setIsOpen] = useState(false);
         return (
-            <div className="group my-4 w-full">
-                <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className={`
-            w-full font-pixel text-[0.7rem] cursor-pointer p-[10px] text-center uppercase 
-            transition-all duration-300 border-[#00FF00] text-[#00FF00] mb-[15px] mt-[15px]
-            
-            ${!isOpen ? 'bg-transparent border-dashed' : 'bg-[#00FF00]/10 border-solid scale-[1.02] text-white mb-[20px] shadow-[0_0_10px_rgba(0,255,0,0.4)]'}
-            
-            hover:bg-[#00FF00]/10 hover:border-solid hover:scale-[1.02] hover:text-white hover:shadow-[0_0_10px_rgba(0,255,0,0.4)]
-          `}
-                    style={{ textShadow: isOpen ? 'none' : '0 0 5px rgba(0, 255, 0, 0.5)' }}
-                >
-                    {isOpen ? `[ - ЗГОРНУТИ ]` : summary}
-                </button>
-
-                <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                    <div className="text-gray-300 leading-relaxed text-xl md:text-2xl font-terminal pt-4 border-t border-[#00FF00]/20">
-                        {children}
-                    </div>
+            <details className="group my-4 w-full">
+                <summary>
+                    {summary}
+                </summary>
+                <div className="text-gray-300 leading-relaxed text-xl md:text-2xl font-terminal pt-4 border-t border-[#00FF00]/20">
+                    {children}
                 </div>
-            </div>
+            </details>
         );
     };
 
@@ -213,15 +198,16 @@ export default function App() {
                             <h2 className="font-pixel text-lg text-white">АРСЕНАЛ НАВИЧОК</h2>
                         </div>
 
-                        {/* БЛОК 1: HARD SKILLS SWIPER */}
+                        {/* HARD SKILLS SWIPER */}
                         <div className="pixel-border p-6 mb-8">
-                            <h3 className="font-pixel text-xs text-[#00FF00] mb-6 text-center border-b-2 border-[#00FF00] pb-2">[ TECH_STACK_SWIPER ]</h3>
+                            <h3 className="font-pixel text-xs text-[#00FF00] mb-6 text-center border-b-2 border-[#00FF00] pb-2">[ TECH_STACK ]</h3>
 
                             <Swiper
                                 modules={[Autoplay]}
                                 spaceBetween={20}
                                 slidesPerView={1}
                                 loop={true}
+                                // disableOnInteraction: false дозволяє автопрокрутці відновитись після ручного свайпу
                                 autoplay={{
                                     delay: 2500,
                                     disableOnInteraction: false,
@@ -230,11 +216,11 @@ export default function App() {
                                     640: { slidesPerView: 2 },
                                     768: { slidesPerView: 3 },
                                 }}
-                                className="w-full py-4"
+                                className="w-full py-4 cursor-grab active:cursor-grabbing"
                             >
                                 {techStack.map((skill, index) => (
                                     <SwiperSlide key={index}>
-                                        <div className="flex items-center justify-center h-24 bg-[#00FF00]/5 border border-dashed border-[#00FF00]/50 hover:bg-[#00FF00]/20 transition-all duration-300 cursor-grab active:cursor-grabbing select-none">
+                                        <div className="flex items-center justify-center h-24 bg-[#00FF00]/5 border border-dashed border-[#00FF00]/50 hover:bg-[#00FF00]/20 transition-all duration-300 select-none">
                                     <span className="font-mono text-lg text-white text-center px-2">
                                         <span className="text-[#00FF00] mr-2">{`>`}</span>{skill}
                                     </span>
@@ -244,7 +230,7 @@ export default function App() {
                             </Swiper>
                         </div>
 
-                        {/* БЛОК 2: SOFT SKILLS */}
+                        {/* SOFT SKILLS */}
                         <div className="pixel-border p-6 mb-8">
                             <h3 className="font-pixel text-xs text-white mb-6 text-center border-b-2 border-white pb-2">[ SOFT_SKILLS ]</h3>
                             <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300 text-lg font-mono">
@@ -263,13 +249,12 @@ export default function App() {
                             </ul>
                         </div>
 
-                        {/* БЛОК 3: МЕНТОР */}
+                        {/* МЕНТОР */}
                         <div className="pixel-border p-6 hover:bg-[rgba(0,255,0,0.1)] transition-colors duration-500">
                             <h3 className="font-bold text-white text-xl mb-2 font-pixel text-xs text-[#00FF00] text-center">[ У КОГО БРАВ КТ ]</h3>
                             <p className="text-white text-2xl text-center mt-4 font-bold tracking-wider animate-pulse font-terminal">
                                 Володимир Василишин
                             </p>
-                            {/* Додано Олексія Татарчинського */}
                             <p className="text-white text-2xl text-center mt-4 font-bold tracking-wider animate-pulse font-terminal">
                                 Олексій Татарчинський
                             </p>
