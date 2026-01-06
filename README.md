@@ -1,7 +1,6 @@
 # 🚀 ML IT BEST Hackathon Submission
 
 ![Project Banner](public/pacman.png) 
-*(Note: Use one of your images here, e.g., pacman.png or a screenshot of the site)*
 
 ## 📄 About
 This project was created for submission to **IT Responsible**. It is a **Gamified Personal Portfolio** designed to showcase skills and projects in an interactive way. 
