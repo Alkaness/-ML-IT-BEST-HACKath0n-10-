@@ -1,21 +1,21 @@
-# 🚀 ML IT BEST Hackathon Submission
+#  ML IT BEST Hackathon Submission
 
 ![Project Banner](public/pacman.png) 
 
-## 📄 About
+##  About
 This project was created for submission to **IT Responsible**. 
 
-### ✨ Key Features
+###  Key Features
 * **Responsive Design:** Fully adaptive layout built with **Tailwind CSS**.
 * **High Performance:** Powered by **Vite** for instant server start and lightning-fast HMR (Hot Module Replacement).
 
-## 🛠️ Built With
+##  Built With
 * **Frontend:** [React](https://reactjs.org/)
 * **Build Tool:** [Vite](https://vitejs.dev/)
 * **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 * **Linting:** ESLint
 
-## 🚀 Getting Started
+##  Getting Started
 
 Follow these instructions to get the project up and running on your local machine.
 
@@ -46,7 +46,7 @@ npm run dev
 
 Open your browser and visit http://localhost:5173 to view the app.
 
-📂 Project Structure
+ Project Structure
 ├── public/          # Static assets (images, icons)
 ├── src/             # Source code
 │   ├── App.jsx      # Main application component
