@@ -3,7 +3,7 @@
 ![Project Banner](public/pacman.png) 
 
 ## 📄 About
-This project was created for submission to **IT Responsible**. It is a **Gamified Personal Portfolio** designed to showcase skills and projects in an interactive way. 
+This project was created for submission to **IT Responsible**. 
 
 ### ✨ Key Features
 * **Responsive Design:** Fully adaptive layout built with **Tailwind CSS**.
